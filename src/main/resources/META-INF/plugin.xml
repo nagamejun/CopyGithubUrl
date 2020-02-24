@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>CopyGithubUrl.CopyGithubUrl</id>
+    <name>Copy Github Url</name>
+    <vendor email="nagamejun@gmail.com" url="https://github.com/nagamejun/CopyGithubUrl">nagamejun</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="copy_github_url" class="com.nagamejun.intellij.CopyGithubUrl" text="Copy Github Url" description="copy github url">
+            <add-to-group group-id="EditorPopupMenu"/>
+            <add-to-group group-id="ProjectViewPopupMenu"/>
+            <add-to-group group-id="EditorTabPopupMenu"/>
+            <add-to-group group-id="ConsoleEditorPopupMenu"/>
+        </action>
+    </actions>
+</idea-plugin>
