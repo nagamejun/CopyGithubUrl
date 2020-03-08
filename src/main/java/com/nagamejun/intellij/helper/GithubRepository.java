@@ -1,44 +1,56 @@
 package com.nagamejun.intellij.helper;
 
 import com.google.common.annotations.VisibleForTesting;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileReader;
-import java.io.IOException;
+import com.intellij.openapi.vcs.LocalFilePath;
+import com.intellij.openapi.vfs.VirtualFile;
+import git4idea.GitUtil;
+import git4idea.repo.GitRepository;
+import com.intellij.openapi.project.Project;
+
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GithubRepository {
+    private final Project project;
+    private VirtualFile filePath;
     private static Pattern INI_CATEGORY = Pattern.compile("\\[\\s*(\\w+)[\\s'\"]+(\\w+)[\\s'\"]+\\]");
     private static Pattern URL_VALUE = Pattern.compile("\\s*url\\s*=\\s*([^\\s]*)\\.git");
     private final File gitConfigFile;
 
-    public GithubRepository(String projectRoot) {
-        this(projectRoot, ".git/config");
+    public GithubRepository(Project project) {
+        this(project, ".git/config");
     }
 
     @VisibleForTesting
-    public GithubRepository(String projectRoot, String gitconfig) {
+    public GithubRepository(Project project, String gitconfig) {
+        this.project = project;
+        String projectRoot = project.getBasePath();
         String gitRoot = findDotGitFolder(new File(projectRoot));
         gitConfigFile = new File(gitRoot, gitconfig);
     }
 
     protected String buildUrlFor(String sanitizedUrlValue) {
-        return "https://" + sanitizedUrlValue + "/blob/master";
+        return "https://" + sanitizedUrlValue + "/blob/" + buildCommitHash();
+    }
+
+    protected String buildCommitHash() {
+        GitRepository repository = GitUtil.getRepositoryManager(project).getRepositoryForFileQuick(this.filePath);
+        return repository.getCurrentRevision();
     }
 
     protected String buildLineDomainPrefix() {
         return "#L";
     }
 
-    public String repoUrlFor(String relativeFilePath) {
+    public String repoUrlFor(VirtualFile relativeFilePath) {
         return repoUrlFor(relativeFilePath, null);
     }
 
-    public String repoUrlFor(String filePath, Integer line) {
-        filePath = filePath.replaceFirst(gitConfigFile.getParentFile().getParent(), "");
-        return gitBaseUrl() + filePath + (line != null ? buildLineDomainPrefix() + line : "");
+    public String repoUrlFor(VirtualFile filePath, Integer line) {
+        this.filePath = filePath;
+        String path = filePath.getCanonicalPath().replaceFirst(gitConfigFile.getParentFile().getParent(), "");
+        return gitBaseUrl() + path + (line != null ? buildLineDomainPrefix() + line : "");
     }
 
     String findDotGitFolder(File absolutePath) {

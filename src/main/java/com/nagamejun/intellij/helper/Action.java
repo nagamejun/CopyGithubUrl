@@ -32,7 +32,7 @@ public class Action {
     }
 
     private void copyUrl(VirtualFile file, Integer line) {
-        String url = repo.repoUrlFor(file.getCanonicalPath(), line);
+        String url = repo.repoUrlFor(file, line);
         CopyPasteManager.getInstance().setContents(new StringSelection(url));
     }
 

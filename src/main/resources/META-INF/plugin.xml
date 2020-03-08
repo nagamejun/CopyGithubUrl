@@ -3,14 +3,14 @@
     <name>Copy Github Url</name>
     <vendor email="nagamejun@gmail.com" url="https://github.com/nagamejun/CopyGithubUrl">nagamejun</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>
+        It allows you to copy the path of the current file in the latest commit hash. Handy when you want to copy the Github link (including line number) to share with someone else as a URL.
+    </description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.lang</depends>
+    <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->

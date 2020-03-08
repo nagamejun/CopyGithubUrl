@@ -11,6 +11,6 @@ public class CopyGithubUrl extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent event) {
         Project project = event.getData(PlatformDataKeys.PROJECT);
-        new Action(new GithubRepository(project.getBasePath())).actionPerformed(event);
+        new Action(new GithubRepository(project)).actionPerformed(event);
     }
 }
