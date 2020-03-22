@@ -1,7 +1,6 @@
 package com.nagamejun.intellij.helper;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.intellij.openapi.vcs.LocalFilePath;
 import com.intellij.openapi.vfs.VirtualFile;
 import git4idea.GitUtil;
 import git4idea.repo.GitRepository;
@@ -16,7 +15,8 @@ public class GithubRepository {
     private VirtualFile filePath;
     private static Pattern INI_CATEGORY = Pattern.compile("\\[\\s*(\\w+)[\\s'\"]+(\\w+)[\\s'\"]+\\]");
     private static Pattern URL_VALUE = Pattern.compile("\\s*url\\s*=\\s*([^\\s]*)\\.git");
-    private final File gitConfigFile;
+    private final String gitConfig;
+    private File gitConfigFile;
 
     public GithubRepository(Project project) {
         this(project, ".git/config");
@@ -25,21 +25,25 @@ public class GithubRepository {
     @VisibleForTesting
     public GithubRepository(Project project, String gitconfig) {
         this.project = project;
-        String projectRoot = project.getBasePath();
-        String gitRoot = findDotGitFolder(new File(projectRoot));
-        gitConfigFile = new File(gitRoot, gitconfig);
+        this.gitConfig = gitconfig;
     }
 
-    protected String buildUrlFor(String sanitizedUrlValue) {
+    public void gitConfig() {
+        String projectRoot = this.project.getBasePath();
+        String gitRoot = findDotGitFolder(new File(projectRoot));
+        gitConfigFile = new File(gitRoot, this.gitConfig);
+    }
+
+    private String buildUrlFor(String sanitizedUrlValue) {
         return "https://" + sanitizedUrlValue + "/blob/" + buildCommitHash();
     }
 
-    protected String buildCommitHash() {
+    public String buildCommitHash() {
         GitRepository repository = GitUtil.getRepositoryManager(project).getRepositoryForFileQuick(this.filePath);
         return repository.getCurrentRevision();
     }
 
-    protected String buildLineDomainPrefix() {
+    private String buildLineDomainPrefix() {
         return "#L";
     }
 
@@ -53,7 +57,7 @@ public class GithubRepository {
         return gitBaseUrl() + path + (line != null ? buildLineDomainPrefix() + line : "");
     }
 
-    String findDotGitFolder(File absolutePath) {
+    public String findDotGitFolder(File absolutePath) {
         if (absolutePath.getParent() == null) {
             throw new RuntimeException(
                     "Could not find parent .git/ folder. Maybe path is not in a git repo? " + absolutePath);

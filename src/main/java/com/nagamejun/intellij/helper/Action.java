@@ -3,7 +3,6 @@ package com.nagamejun.intellij.helper;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.ui.MessageType;
@@ -16,7 +15,6 @@ import com.intellij.ui.awt.RelativePoint;
 import java.awt.datatransfer.StringSelection;
 
 public class Action {
-    private static final Logger LOG = Logger.getInstance("#" + Action.class.getName());
     private final GithubRepository repo;
 
     public Action(GithubRepository repo) {
