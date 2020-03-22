@@ -42,7 +42,7 @@ public class Action {
                 .createHtmlTextBalloonBuilder(
                         "<p>Github URL for '<tt>"
                                 + file.getPresentableName()
-                                + "</tt> (on master branch) copied to your clipboard.</p>",
+                                + "</tt> (on current branch) copied to your clipboard.</p>",
                         MessageType.INFO, null)
                 .setFadeoutTime(5500)
                 .createBalloon()
