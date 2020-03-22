@@ -1,10 +1,7 @@
 package com.nagamejun.intellij;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.editor.Editor;
 import com.nagamejun.intellij.helper.GithubRepository;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -20,22 +17,16 @@ public class GithubRepositoryTest {
 
     @Mock
     private Project project;
-    private AnActionEvent event;
-    private Editor editor;
     private VirtualFile vFile;
 
     @Before
     public void setUp() throws Exception {
         project = mock(Project.class);
-        event = mock(AnActionEvent.class);
-        editor = mock(Editor.class);
         vFile = mock(VirtualFile.class);
     }
 
     @Test
     public void github_line() throws Exception {
-        doReturn(editor).when(event).getData(PlatformDataKeys.EDITOR);
-        doReturn(vFile).when(event).getData(PlatformDataKeys.VIRTUAL_FILE);
         doReturn(".").when(project).getBasePath();
         doReturn("/src/main/java/com/nagamejun/intellij/helper/GithubRepository.java").when(vFile).getCanonicalPath();
 
