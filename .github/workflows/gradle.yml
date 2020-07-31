@@ -1,6 +1,6 @@
 name: CI with Gradle
 
-on: [pull_request, push]
+on: [pull_request, push, repository_dispatch]
 
 jobs:
   build_and_test:
